@@ -29,6 +29,10 @@ func findHistContainers() {
 
 	err = catalog.DumpTable("Containers", func(row *ordereddict.Dict) error {
 		dirVal, pres := row.Get("Directory")
+		containerVal, pres := row.Get("Name")
+		containerName := fmt.Sprintf("%v", containerVal)
+		// Remove Null Unicode
+		containerName = strings.Replace(containerName, "\u0000", "", -1)
 		if pres {
 			dir := fmt.Sprintf("%v", dirVal)
 			res := strings.Contains(dir, "History.IE5")
@@ -38,6 +42,8 @@ func findHistContainers() {
 				containerID := fmt.Sprintf("Container_%v", containerINT)
 				if present == true {
 					err = catalog.DumpTable(containerID, func(row *ordereddict.Dict) error {
+						row.Set("Directory", dirVal)
+						row.Set("ContainerName", containerName)
 						serialized, err := json.Marshal(row)
 						if err != nil {
 							return nil

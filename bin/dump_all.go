@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Velocidex/ordereddict"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
@@ -28,12 +29,18 @@ func findAllContainers() {
 
 	err = catalog.DumpTable("Containers", func(row *ordereddict.Dict) error {
 		dirVal, pres := row.Get("Directory")
+		containerVal, pres := row.Get("Name")
+		containerName := fmt.Sprintf("%v", containerVal)
+		// Remove Null Unicode
+		containerName = strings.Replace(containerName, "\u0000", "", -1)
+
 		if pres {
 			containerINT, present := row.Get("ContainerId")
 			containerID := fmt.Sprintf("Container_%v", containerINT)
 			if present {
 				err = catalog.DumpTable(containerID, func(row *ordereddict.Dict) error {
-					row.Set("directory", dirVal)
+					row.Set("Directory", dirVal)
+					row.Set("ContainerName", containerName)
 					serialized, err := json.Marshal(row)
 					if err != nil {
 						return nil
