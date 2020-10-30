@@ -7,6 +7,7 @@ import (
 	"www.velocidex.com/golang/go-ese/parser"
 )
 
+// CommandHandler : This is a cmd handler.. honestly linter
 type CommandHandler func(command string) bool
 
 var (
@@ -15,7 +16,7 @@ var (
 
 	debug = app.Flag("debug", "Enable debug messages").Bool()
 
-	command_handlers []CommandHandler
+	commandHandlers []CommandHandler
 )
 
 func main() {
@@ -28,8 +29,8 @@ func main() {
 		parser.DebugWalk = true
 	}
 
-	for _, command_handler := range command_handlers {
-		if command_handler(command) {
+	for _, commandHandler := range commandHandlers {
+		if commandHandler(command) {
 			break
 		}
 	}

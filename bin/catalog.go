@@ -9,26 +9,26 @@ import (
 )
 
 var (
-	catalog_command = app.Command(
+	catalogCommand = app.Command(
 		"catalog", "Dump the catalog")
-	catalog_command_file_arg = catalog_command.Arg(
+	catalogCommandFileArg = catalogCommand.Arg(
 		"file", "The image file to inspect",
 	).Required().OpenFile(os.O_RDONLY, os.FileMode(0666))
 )
 
 func doCatalog() {
-	ese_ctx, err := parser.NewESEContext(*catalog_command_file_arg)
+	eseCtx, err := parser.NewESEContext(*catalogCommandFileArg)
 	kingpin.FatalIfError(err, "Unable to open ese file")
 
-	catalog, err := parser.ReadCatalog(ese_ctx)
+	catalog, err := parser.ReadCatalog(eseCtx)
 	kingpin.FatalIfError(err, "Unable to open ese file")
 	fmt.Printf(catalog.Dump())
 }
 
 func init() {
-	command_handlers = append(command_handlers, func(command string) bool {
+	commandHandlers = append(commandHandlers, func(command string) bool {
 		switch command {
-		case catalog_command.FullCommand():
+		case catalogCommand.FullCommand():
 			doCatalog()
 
 		default:

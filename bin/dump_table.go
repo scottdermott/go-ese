@@ -11,26 +11,26 @@ import (
 )
 
 var (
-	dump_command = app.Command(
+	dumpCommand = app.Command(
 		"dump", "Dump table.")
 
-	dump_command_file_arg = dump_command.Arg(
+	dumpCommandFileArg = dumpCommand.Arg(
 		"file", "The image file to inspect",
 	).Required().OpenFile(os.O_RDONLY, os.FileMode(0666))
 
-	dump_command_table_name = dump_command.Arg(
+	dumpCommandTableName = dumpCommand.Arg(
 		"table", "The name of the table to dump").
 		Required().String()
 )
 
 func doDump() {
-	ese_ctx, err := parser.NewESEContext(*dump_command_file_arg)
+	eseCtx, err := parser.NewESEContext(*dumpCommandFileArg)
 	kingpin.FatalIfError(err, "Unable to open ese file")
 
-	catalog, err := parser.ReadCatalog(ese_ctx)
+	catalog, err := parser.ReadCatalog(eseCtx)
 	kingpin.FatalIfError(err, "Unable to open ese file")
 
-	err = catalog.DumpTable(*dump_command_table_name, func(row *ordereddict.Dict) error {
+	err = catalog.DumpTable(*dumpCommandTableName, func(row *ordereddict.Dict) error {
 		serialized, err := json.Marshal(row)
 		if err != nil {
 			return err
@@ -43,9 +43,9 @@ func doDump() {
 }
 
 func init() {
-	command_handlers = append(command_handlers, func(command string) bool {
+	commandHandlers = append(commandHandlers, func(command string) bool {
 		switch command {
-		case dump_command.FullCommand():
+		case dumpCommand.FullCommand():
 			doDump()
 		default:
 			return false

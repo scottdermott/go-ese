@@ -8,29 +8,29 @@ import (
 )
 
 var (
-	page_command = app.Command(
+	pageCommand = app.Command(
 		"page", "Dump information about a database page")
 
-	page_command_file_arg = page_command.Arg(
+	pageCommandFileArg = pageCommand.Arg(
 		"file", "The image file to inspect",
 	).Required().OpenFile(os.O_RDONLY, os.FileMode(0666))
 
-	page_command_page_number = page_command.Arg(
+	pageCommandPageNumber = pageCommand.Arg(
 		"page_number", "The page to inspect",
 	).Required().Int64()
 )
 
 func doPage() {
-	ese_ctx, err := parser.NewESEContext(*page_command_file_arg)
+	eseCtx, err := parser.NewESEContext(*pageCommandFileArg)
 	kingpin.FatalIfError(err, "Unable to open ese file")
 
-	parser.DumpPage(ese_ctx, *page_command_page_number)
+	parser.DumpPage(eseCtx, *pageCommandPageNumber)
 }
 
 func init() {
-	command_handlers = append(command_handlers, func(command string) bool {
+	commandHandlers = append(commandHandlers, func(command string) bool {
 		switch command {
-		case page_command.FullCommand():
+		case pageCommand.FullCommand():
 			doPage()
 		default:
 			return false

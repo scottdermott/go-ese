@@ -1,5 +1,5 @@
 all:
-	go build -o eseparser bin/*.go
+	go build -o esewebcache bin/*.go
 
 
 windows:
