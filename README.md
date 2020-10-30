@@ -1,4 +1,22 @@
-# A Go based ESE parser.
+# A Go based WebCache parser
+
+```
+usage: esewebcache [<flags>] <command> [<args> ...]
+
+A tool for inspecting ese files.
+
+Flags:
+  -h, --help   Show context-sensitive help (also try --help-long and --help-man).
+      --debug  Enable debug messages
+
+Commands:
+  help [<command>...]
+  catalog <file>
+  dump_all <file>
+  dump_hist <file>
+  dump <file> <table>
+  page <file> <page_number>
+```
 
 The Extensible Storage Engine (ESE) Database File is commonly used
 within Windows to store various application specific information. It
