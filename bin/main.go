@@ -11,7 +11,7 @@ import (
 type CommandHandler func(command string) bool
 
 var (
-	app = kingpin.New("eseparser",
+	app = kingpin.New("esewebcache",
 		"A tool for inspecting ese files.")
 
 	debug = app.Flag("debug", "Enable debug messages").Bool()
