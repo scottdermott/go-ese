@@ -40,7 +40,7 @@ func findHistContainers() {
 					err = catalog.DumpTable(containerID, func(row *ordereddict.Dict) error {
 						serialized, err := json.Marshal(row)
 						if err != nil {
-							return err
+							return nil
 						}
 						fmt.Printf("%v\n", string(serialized))
 						return nil
