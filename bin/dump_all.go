@@ -27,17 +27,21 @@ func findAllContainers() {
 	kingpin.FatalIfError(err, "Unable to open ese file")
 
 	err = catalog.DumpTable("Containers", func(row *ordereddict.Dict) error {
-		containerINT, present := row.Get("ContainerId")
-		if present {
+		dirVal, pres := row.Get("Directory")
+		if pres {
+			containerINT, present := row.Get("ContainerId")
 			containerID := fmt.Sprintf("Container_%v", containerINT)
-			err = catalog.DumpTable(containerID, func(row *ordereddict.Dict) error {
-				serialized, err := json.Marshal(row)
-				if err != nil {
+			if present {
+				err = catalog.DumpTable(containerID, func(row *ordereddict.Dict) error {
+					row.Set("directory", dirVal)
+					serialized, err := json.Marshal(row)
+					if err != nil {
+						return nil
+					}
+					fmt.Printf("%v\n", string(serialized))
 					return nil
-				}
-				fmt.Printf("%v\n", string(serialized))
-				return nil
-			})
+				})
+			}
 		}
 		return nil
 	})
